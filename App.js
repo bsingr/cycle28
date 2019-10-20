@@ -23,6 +23,14 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import AsyncStorage from '@react-native-community/async-storage';
+
+AsyncStorage.setItem('@storage_Key', 'stored value').then(x => {
+  console.log(x)
+  AsyncStorage.getItem('@storage_Key').then(y => {
+    console.log('g', y)
+  })
+})
 
 const App: () => React$Node = () => {
   return (
