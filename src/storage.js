@@ -8,5 +8,5 @@ export async function write(data) {
 
 export async function read() {
   const data = await AsyncStorage.getItem(STORAGE_KEY)
-  return JSON.parse(data)
+  return JSON.parse(data) || {}
 }

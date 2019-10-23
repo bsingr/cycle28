@@ -11,8 +11,11 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.2",
+    "dayjs": "^1.8.16",
+    "hoist-non-react-statics": "^3.3.0",
     "react": "16.9.0",
-    "react-native": "0.61.2"
+    "react-native": "0.61.2",
+    "react-native-calendars": "^1.212.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",

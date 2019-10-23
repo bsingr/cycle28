@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -23,99 +23,100 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import AsyncStorage from '@react-native-community/async-storage';
 
-AsyncStorage.setItem('@storage_Key', 'stored value').then(x => {
-  console.log(x)
-  AsyncStorage.getItem('@storage_Key').then(y => {
-    console.log('g', y)
-  })
-})
+import dayjs from 'dayjs';
 
-const App: () => React$Node = () => {
+import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
+
+import {read, write} from './src/storage'
+
+const App: () => React$Node = () => {  
+  const [menstruationDays, setMenstruationDays] = useState({});
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // load all data once initially
+  useEffect(() => {
+    if (!isLoaded) {
+      read().then(data => {
+        setMenstruationDays(data);
+        setIsLoaded(true);
+      })
+    }
+  }, [isLoaded]);
+
+  // persist data after (but skip if it was never loaded before)
+  useEffect(() => {
+    if (isLoaded) {
+      write(menstruationDays)
+    }
+  }, [menstruationDays]);
+
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
+        <View style={styles.main}>
+          <View style={styles.calendar}>
+            <CalendarList
+              firstDay={1}
+              onDayPress={day => {
+                if (menstruationDays[day.dateString]) {
+                  delete menstruationDays[day.dateString]
+                } else {
+                  menstruationDays[day.dateString] = {color: 'darkred'}
+                }
+                setMenstruationDays(Object.assign({}, menstruationDays))
+              }}
+              // Max amount of months allowed to scroll to the past. Default = 50
+              pastScrollRange={50}
+              // Max amount of months allowed to scroll to the future. Default = 50
+              futureScrollRange={50}
+              // Enable or disable scrolling of calendar list
+              scrollEnabled={true}
+              // Enable or disable vertical scroll indicator. Default = false
+              showScrollIndicator={true}
+              current={dayjs().format('YYYY-MM-DD')}
+              // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
+              minDate={dayjs().add(1, 'week').format('YYYY-MM-DD')}
+              markedDates={menstruationDays}
+              // Date marking style [simple/period/multi-dot/custom]. Default = 'simple'
+              markingType={'period'}
+            />
           </View>
-        </ScrollView>
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>
+              Mark your stuff..
+            </Text>
+          </View>
+        </View>
       </SafeAreaView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  main: {
+    flexDirection: 'column',
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
+  calendar: {
     backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
+    flexBasis: 500,
+    flex: 3,
   },
   footer: {
+    flex: 1,
     color: Colors.dark,
     fontSize: 12,
     fontWeight: '600',
     padding: 4,
     paddingRight: 12,
-    textAlign: 'right',
+  },
+  footerText: {
+    fontSize: 14,
+    textAlign: 'center',
+    fontWeight: '600',
+    color: Colors.black,
   },
 });
 
