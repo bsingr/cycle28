@@ -29,8 +29,10 @@ import dayjs from 'dayjs';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 
 import {read, write} from './src/storage'
+import CalendarModel from './src/calendarModel'
 
-const App: () => React$Node = () => {  
+const App: () => React$Node = () => {
+  const [calendar, setCalendar] = useState(new CalendarModel());
   const [menstruationDays, setMenstruationDays] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -38,7 +40,8 @@ const App: () => React$Node = () => {
   useEffect(() => {
     if (!isLoaded) {
       read().then(data => {
-        setMenstruationDays(data);
+        calendar.load(data);
+        setMenstruationDays(Object.assign({}, calendar.getMenstruationDays()));
         setIsLoaded(true);
       })
     }
@@ -47,10 +50,9 @@ const App: () => React$Node = () => {
   // persist data after (but skip if it was never loaded before)
   useEffect(() => {
     if (isLoaded) {
-      write(menstruationDays)
+      write(calendar.dump())
     }
   }, [menstruationDays]);
-
 
   return (
     <>
@@ -62,11 +64,11 @@ const App: () => React$Node = () => {
               firstDay={1}
               onDayPress={day => {
                 if (menstruationDays[day.dateString]) {
-                  delete menstruationDays[day.dateString]
+                  calendar.remove(day.dateString);
                 } else {
-                  menstruationDays[day.dateString] = {color: 'darkred'}
+                  calendar.add(day.dateString);
                 }
-                setMenstruationDays(Object.assign({}, menstruationDays))
+                setMenstruationDays(Object.assign({}, calendar.getMenstruationDays()))
               }}
               // Max amount of months allowed to scroll to the past. Default = 50
               pastScrollRange={50}
@@ -77,8 +79,6 @@ const App: () => React$Node = () => {
               // Enable or disable vertical scroll indicator. Default = false
               showScrollIndicator={true}
               current={dayjs().format('YYYY-MM-DD')}
-              // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
-              minDate={dayjs().add(1, 'week').format('YYYY-MM-DD')}
               markedDates={menstruationDays}
               // Date marking style [simple/period/multi-dot/custom]. Default = 'simple'
               markingType={'period'}
