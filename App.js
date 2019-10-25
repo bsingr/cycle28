@@ -146,11 +146,8 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
   },
-  calendar: {
-    backgroundColor: Colors.white,
-  },
   header: {
-    height: 90,
+    flex: 1,
     color: Colors.dark,
     fontSize: 12,
     fontWeight: '300',
@@ -165,6 +162,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '300',
     color: Colors.black,
+  },
+  calendar: {
+    flex: 8,
+    backgroundColor: Colors.white,
   },
 });
 
