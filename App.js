@@ -34,6 +34,7 @@ import CalendarModel from './src/calendarModel'
 const App: () => React$Node = () => {
   const [calendar, setCalendar] = useState(new CalendarModel());
   const [menstruationDays, setMenstruationDays] = useState({});
+  const [menstruationStats, setMenstruationStats] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false);
 
   // load all data once initially
@@ -42,6 +43,7 @@ const App: () => React$Node = () => {
       read().then(data => {
         calendar.load(data);
         setMenstruationDays(Object.assign({}, calendar.getMenstruationDays()));
+        setMenstruationStats(calendar.getIntervalStats());
         setIsLoaded(true);
       })
     }
@@ -51,14 +53,27 @@ const App: () => React$Node = () => {
   useEffect(() => {
     if (isLoaded) {
       write(calendar.dump())
+      setMenstruationStats(calendar.getIntervalStats())
     }
   }, [menstruationDays]);
 
+  let headerText;
+  if (menstruationStats === null) {
+    headerText = '';
+  } else {
+    headerText = `${menstruationStats.whenWasLastInterval} since last menstruation (taking ${menstruationStats.lengthOfLastInterval} days) Usual interval is ${menstruationStats.p90Interval} days (taking ${menstruationStats.p90Length} days)`
+  }
+  
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
         <View style={styles.main}>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>
+              {headerText}
+            </Text>
+          </View>
           <View style={styles.calendar}>
             <CalendarList
               firstDay={1}
@@ -78,16 +93,11 @@ const App: () => React$Node = () => {
               scrollEnabled={true}
               // Enable or disable vertical scroll indicator. Default = false
               showScrollIndicator={true}
-              current={dayjs().format('YYYY-MM-DD')}
+              current={calendar.getToday()}
               markedDates={menstruationDays}
               // Date marking style [simple/period/multi-dot/custom]. Default = 'simple'
               markingType={'period'}
             />
-          </View>
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>
-              Mark your stuff..
-            </Text>
           </View>
         </View>
       </SafeAreaView>
@@ -97,22 +107,19 @@ const App: () => React$Node = () => {
 
 const styles = StyleSheet.create({
   main: {
-    flexDirection: 'column',
   },
   calendar: {
     backgroundColor: Colors.white,
-    flexBasis: 500,
-    flex: 3,
   },
-  footer: {
-    flex: 1,
+  header: {
+    height: 90,
     color: Colors.dark,
     fontSize: 12,
     fontWeight: '600',
     padding: 4,
     paddingRight: 12,
   },
-  footerText: {
+  headerText: {
     fontSize: 14,
     textAlign: 'center',
     fontWeight: '600',
