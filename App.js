@@ -61,7 +61,8 @@ const App: () => React$Node = () => {
   if (menstruationStats === null) {
     headerText = '';
   } else {
-    headerText = `${menstruationStats.whenWasLastInterval} since last menstruation (taking ${menstruationStats.lengthOfLastInterval} days) Usual interval is ${menstruationStats.p90Interval} days (taking ${menstruationStats.p90Length} days)`
+    headerText = `${menstruationStats.whenWasLastInterval} since last period (taking ${menstruationStats.lengthOfLastInterval} days)
+Usual interval is ${menstruationStats.p90Interval} days (taking ${menstruationStats.p90Length} days)`
   }
   
   return (
@@ -86,9 +87,9 @@ const App: () => React$Node = () => {
                 setMenstruationDays(Object.assign({}, calendar.getMenstruationDays()))
               }}
               // Max amount of months allowed to scroll to the past. Default = 50
-              pastScrollRange={50}
+              pastScrollRange={24}
               // Max amount of months allowed to scroll to the future. Default = 50
-              futureScrollRange={50}
+              futureScrollRange={1}
               // Enable or disable scrolling of calendar list
               scrollEnabled={true}
               // Enable or disable vertical scroll indicator. Default = false
