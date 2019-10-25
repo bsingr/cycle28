@@ -44,9 +44,11 @@ export default class Calendar {
 
   load(rawDays) {
     this.menstruationDays = {}
-    rawDays.forEach(day => {
-      this.menstruationDays[day] = this.defaultDay()
-    })
+    if (Array.isArray(rawDays)) { // prevent unsafe data
+      rawDays.forEach(day => {
+        this.menstruationDays[day] = this.defaultDay()
+      })
+    }
     this.update();
   }
 
