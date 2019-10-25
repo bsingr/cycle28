@@ -34,6 +34,8 @@ target 'Cycle28' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
+  pod 'TouchID', :path => '../node_modules/react-native-touch-id'
+
   target 'Cycle28Tests' do
     inherit! :search_paths
     # Pods for testing
