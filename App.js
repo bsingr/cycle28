@@ -61,8 +61,8 @@ const App: () => React$Node = () => {
   if (menstruationStats === null) {
     headerText = '';
   } else {
-    headerText = `${menstruationStats.whenWasLastInterval} since last period (taking ${menstruationStats.lengthOfLastInterval} days)
-Usual interval is ${menstruationStats.p90Interval} days (taking ${menstruationStats.p90Length} days)`
+    headerText = `Last period was ${menstruationStats.whenWasLastInterval} days ago lasting ${menstruationStats.lengthOfLastInterval} days
+Usually a period happens every ${menstruationStats.p90Interval} days lasting ${menstruationStats.p90Length} days`
   }
   
   return (
@@ -116,14 +116,17 @@ const styles = StyleSheet.create({
     height: 90,
     color: Colors.dark,
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '300',
     padding: 4,
     paddingRight: 12,
+    paddingTop: 30,
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgray'
   },
   headerText: {
     fontSize: 14,
     textAlign: 'center',
-    fontWeight: '600',
+    fontWeight: '300',
     color: Colors.black,
   },
 });

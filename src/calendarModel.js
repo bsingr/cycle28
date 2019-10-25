@@ -1,8 +1,4 @@
 import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-
-dayjs.extend(relativeTime)
-
 import percentile from './percentile'
 
 export default class Calendar {
@@ -103,7 +99,7 @@ export default class Calendar {
   calculateWhenWasLastInterval() {
     const days = Object.keys(this.menstruationDays).sort();
     const lastDay = days[days.length - 1]
-    return dayjs(this.getToday()).from(lastDay, true)
+    return dayjs(this.getToday()).diff(lastDay, 'day')
   }
 
   calculateIntervals() {
