@@ -83,10 +83,18 @@ const App: () => React$Node = () => {
 
   let headerText;
   if (menstruationStats === null) {
-    headerText = '';
+    headerText = null;
   } else {
-    headerText = `Last period was ${menstruationStats.whenWasLastInterval} days ago lasting ${menstruationStats.lengthOfLastInterval} days
-Usually a period happens every ${menstruationStats.p90Interval} days lasting ${menstruationStats.p90Length} days`
+    headerText = (
+      <>
+        <Text style={styles.headerTextFirst}>
+          Last period was <Text style={styles.headerTextBold}>{menstruationStats.whenWasLastInterval} days ago</Text> lasting {menstruationStats.lengthOfLastInterval} days
+        </Text>
+        <Text style={styles.headerTextSecond}>
+          Usually a period happens every {menstruationStats.p90Interval} days lasting {menstruationStats.p90Length} days
+        </Text>
+      </>
+    )
   }
 
   if (!isAuthenticated) {
@@ -125,9 +133,7 @@ Usually a period happens every ${menstruationStats.p90Interval} days lasting ${m
       <StatusBar barStyle="dark-content" />
       <SafeAreaView style={styles.main}>
         <View style={styles.header}>
-          <Text style={styles.headerText}>
-            {headerText}
-          </Text>
+          {headerText}
         </View>
         <View style={styles.calendar}>
           <CalendarList
@@ -184,8 +190,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'lightgray'
   },
-  headerText: {
+  headerTextFirst: {
     fontSize: 14,
+    textAlign: 'center',
+    fontWeight: '300',
+    color: Colors.black,
+  },
+  headerTextBold: {
+    fontWeight: '600'
+  },
+  headerTextSecond: {
+    marginTop: 10,
+    fontSize: 12,
     textAlign: 'center',
     fontWeight: '300',
     color: Colors.black,
