@@ -18,6 +18,7 @@ import {
   Alert,
   TouchableOpacity,
   Image,
+  AppState,
 } from 'react-native';
 
 import {
@@ -42,6 +43,23 @@ const App: () => React$Node = () => {
   const [menstruationDays, setMenstruationDays] = useState({});
   const [menstruationStats, setMenstruationStats] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // Require to re-authenticate after app is inactive more than 10s
+  useEffect(() => {
+    const handleStateChange = (nextAppState) => {
+      if (isAuthenticated && nextAppState !== 'active') {
+        setTimeout(() => {
+          if (AppState.currentState !== 'active') {
+            setIsAuthenticated(false);
+          }
+        }, 10000)
+      }
+    }
+    AppState.addEventListener('change', handleStateChange);
+    return () => {
+      AppState.removeEventListener('change', handleStateChange);
+    }
+  })
 
   // load all data once initially
   useEffect(() => {
