@@ -219,6 +219,8 @@ PODS:
     - ReactCommon/jscallinvoker (= 0.61.2)
   - RNCAsyncStorage (1.6.2):
     - React
+  - TouchID (4.4.1):
+    - React
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -250,6 +252,7 @@ DEPENDENCIES:
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - TouchID (from `../node_modules/react-native-touch-id`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -307,6 +310,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
+  TouchID:
+    :path: "../node_modules/react-native-touch-id"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -337,8 +342,9 @@ SPEC CHECKSUMS:
   React-RCTVibration: fb54c732fd20405a76598e431aa2f8c2bf527de9
   ReactCommon: 5848032ed2f274fcb40f6b9ec24067787c42d479
   RNCAsyncStorage: 60a80e72d95bf02a01cace55d3697d9724f0d77f
+  TouchID: ba4c656d849cceabc2e4eef722dea5e55959ecf4
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: da0988452cf1ee7483fa8e1d8e178a516ccd66f1
+PODFILE CHECKSUM: 6d9d65795934d2174e94c95dbb36c337753b6f3c
 
 COCOAPODS: 1.8.4
