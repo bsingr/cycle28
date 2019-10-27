@@ -13,7 +13,7 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="cycl28" translatesAutoresizingMaskIntoConstraints="NO" id="rGa-Ob-Blf">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="rGa-Ob-Blf">
                     <rect key="frame" x="120" y="176" width="240" height="128"/>
                     <autoresizingMask key="autoresizingMask"/>
                 </imageView>
@@ -25,6 +25,6 @@
         </view>
     </objects>
     <resources>
-        <image name="cycl28" width="1024" height="1024"/>
+        <image name="logo" width="1024" height="1024"/>
     </resources>
 </document>

@@ -16,6 +16,8 @@ import {
   StatusBar,
   Button,
   Alert,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
 
 import {
@@ -69,24 +71,31 @@ const App: () => React$Node = () => {
 Usually a period happens every ${menstruationStats.p90Interval} days lasting ${menstruationStats.p90Length} days`
   }
 
-
   if (!isAuthenticated) {
+    const handleAuthenticate = () => {
+      TouchID.authenticate('Authenticate to unlock sensible data', {passcodeFallback: true})
+        .then(success => {
+          setIsAuthenticated(true)
+        })
+        .catch(error => {
+          Alert.alert('Authentication Failed. Try Again!');
+        });
+    }
     return (
       <>
         <StatusBar barStyle="dark-content" />
         <SafeAreaView style={styles.authenticateContainer}>
           <View style={styles.authenticate}>
+            <TouchableOpacity
+              onPress={handleAuthenticate}>
+              <Image
+                style={{width: 128, height: 128}}
+                source={require('./resources/logo.png')}
+              />
+            </TouchableOpacity>
             <Button
-              title="Authenticate Cycle28"
-              onPress={() => {
-              TouchID.authenticate('Authenticate to unlock sensible data', {passcodeFallback: true})
-                .then(success => {
-                  setIsAuthenticated(true)
-                })
-                .catch(error => {
-                  Alert.alert('Authentication Failed. Try Again!');
-                });
-            }} />
+              title="Authenticate"
+              onPress={handleAuthenticate} />
           </View>
         </SafeAreaView>
       </>
@@ -164,7 +173,7 @@ const styles = StyleSheet.create({
     color: Colors.black,
   },
   calendar: {
-    flex: 8,
+    flex: 10,
     backgroundColor: Colors.white,
   },
 });
