@@ -1,5 +1,7 @@
 # cycle28 - Cycle Tracking Calendar App
 
+![./resources/logo.png](./resources/logo.png)
+
 ## Why
 
 Because the App Stores is full of bullshit period apps. Over-engineered, over-designed, none-private, childish... Nothing like a good old calendar.
